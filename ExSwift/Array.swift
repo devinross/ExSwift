@@ -145,7 +145,7 @@ public extension Array {
         - parameter condition: A function which returns a boolean if an element satisfies a given condition or not.
         - returns: First matched item or nil
     */
-    public func find (_ condition: (Element) -> Bool) -> Element? {
+    public func find (_ condition: @noescape (Element) -> Bool) -> Element? {
         return takeFirst(condition)
     }
 
@@ -354,7 +354,7 @@ public extension Array {
         - parameter cond: Function which takes an element and produces an equatable result.
         - returns: Array partitioned in order, splitting via results of cond.
     */
-    public func partitionBy <Element: Equatable> (_ cond: (Element) -> Element) -> [Array] {
+    public func partitionBy <Element: Equatable> (_ cond: @noescape (Element) -> Element) -> [Array] {
         var result = [Array]()
         var lastValue: Element? = nil
 
@@ -618,7 +618,7 @@ public extension Array {
         - parameter condition: A function which returns a boolean if an element satisfies a given condition or not.
         - returns: The first element in the array to meet the condition
     */
-    public func takeFirst (_ condition: (Element) -> Bool) -> Element? {
+    public func takeFirst (_ condition: @noescape (Element) -> Bool) -> Element? {
         
         for value in self {
             if condition(value) {
@@ -989,7 +989,7 @@ public extension Array {
         - parameter mapFunction:
         - returns: Mapped array
     */
-    public func mapFilter <V> (mapFunction map: (Element) -> (V)?) -> [V] {
+    public func mapFilter <V> (mapFunction map: @noescape (Element) -> (V)?) -> [V] {
         
         var mapped = [V]()
         
@@ -1011,7 +1011,7 @@ public extension Array {
         - parameter mapFunction:
         - returns: Accumulated value and mapped array
     */
-    public func mapAccum <U, V> (_ initial: U, mapFunction map: (U, Element) -> (U, V)) -> (U, [V]) {
+    public func mapAccum <U, V> (_ initial: U, mapFunction map: @noescape (U, Element) -> (U, V)) -> (U, [V]) {
         var mapped = [V]()
         var acc = initial
         
@@ -1027,7 +1027,7 @@ public extension Array {
     /**
         self.reduce with initial value self.first()
     */
-    public func reduce (_ combine: (Element, Element) -> Element) -> Element? {
+    public func reduce (_ combine: @noescape (Element, Element) -> Element) -> Element? {
         if let firstElement = first {
             return skip(1).reduce(firstElement, combine)
         }
@@ -1038,14 +1038,14 @@ public extension Array {
     /**
         self.reduce from right to left
     */
-    @available(*, unavailable, message: "use 'reverse().reduce' instead") public func reduceRight <U> (_ initial: U, combine: (U, Element) -> U) -> U {
+    @available(*, unavailable, message: "use 'reverse().reduce' instead") public func reduceRight <U> (_ initial: U, combine: @noescape (U, Element) -> U) -> U {
         return reversed().reduce(initial, combine)
     }
 
     /**
         self.reduceRight with initial value self.last()
     */
-    @available(*, unavailable, message: "use 'reverse().reduce' instead") public func reduceRight (_ combine: (Element, Element) -> Element) -> Element? {
+    @available(*, unavailable, message: "use 'reverse().reduce' instead") public func reduceRight (_ combine: @noescape (Element, Element) -> Element) -> Element? {
         return reversed().reduce(combine)
     }
 
@@ -1065,7 +1065,7 @@ public extension Array {
         - parameter keySelector:
         - returns: A dictionary
     */
-    public func toDictionary <U> (_ keySelector:(Element) -> U) -> [U: Element] {
+    public func toDictionary <U> (_ keySelector:@noescape (Element) -> U) -> [U: Element] {
         var result: [U: Element] = [:]
         for item in self {
             result[keySelector(item)] = item
@@ -1080,7 +1080,7 @@ public extension Array {
         - parameter transform:
         - returns: A dictionary
     */
-    public func toDictionary <K, V> (_ transform: (Element) -> (key: K, value: V)?) -> [K: V] {
+    public func toDictionary <K, V> (_ transform: @noescape (Element) -> (key: K, value: V)?) -> [K: V] {
         var result: [K: V] = [:]
         for item in self {
             if let entry = transform(item) {
@@ -1135,7 +1135,7 @@ public extension Array {
         - parameter isOrderedBefore: Comparison function.
         - returns: An array that is sorted according to the given function
     */
-    @available(*, unavailable, message: "use 'sort' instead") public func sortBy (_ isOrderedBefore: (Element, Element) -> Bool) -> [Element] {
+    @available(*, unavailable, message: "use 'sort' instead") public func sortBy (_ isOrderedBefore: @noescape (Element, Element) -> Bool) -> [Element] {
         return sorted(by: isOrderedBefore)
     }
 
@@ -1145,7 +1145,7 @@ public extension Array {
         - parameter n: the number of times to cycle through
         - parameter block: the block to run for each element in each cycle
     */
-    public func cycle (_ n: Int? = nil, block: (Element) -> ()) {
+    public func cycle (_ n: Int? = nil, block: @noescape (Element) -> ()) {
         var cyclesRun = 0
         while true {
             if let n = n {
@@ -1170,7 +1170,7 @@ public extension Array {
         - parameter block: the block to run each time
         - returns: the min element, or nil if there are no items for which the block returns true
     */
-    public func bSearch (_ block: (Element) -> (Bool)) -> Element? {
+    public func bSearch (_ block: @noescape (Element) -> (Bool)) -> Element? {
         if count == 0 {
             return nil
         }
@@ -1204,7 +1204,7 @@ public extension Array {
         - parameter block: the block to run each time
         - returns: an item (there could be multiple matches) for which the block returns true
     */
-    /*public func bSearch (block: (Element) -> (Int)) -> Element? {
+    /*public func bSearch (block: @noescape (Element) -> (Int)) -> Element? {
         let match = bSearch { item in
             block(item) >= 0
         }
@@ -1221,7 +1221,7 @@ public extension Array {
         - parameter block: the block to use to sort by
         - returns: an array sorted by that block, in ascending order
     */
-    public func sortUsing <U:Comparable> (_ block: ((Element) -> U)) -> [Element] {
+    public func sortUsing <U:Comparable> (_ block: (@noescape (Element) -> U)) -> [Element] {
         return self.sorted(by: { block($0.0) < block($0.1) })
     }
 

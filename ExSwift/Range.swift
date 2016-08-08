@@ -77,7 +77,7 @@ public extension CountableClosedRange {
         
         - parameter function: Function to call
     */
-    public func times (_ function: () -> ()) {
+    public func times (_ function: @noescape () -> ()) {
         each { (current: Bound) -> () in
             function()
         }
@@ -88,7 +88,7 @@ public extension CountableClosedRange {
     
         - parameter function: Function to invoke
     */
-    public func times (_ function: (Bound) -> ()) {
+    public func times (_ function: @noescape (Bound) -> ()) {
         each (function)
     }
 
@@ -97,7 +97,7 @@ public extension CountableClosedRange {
     
         - parameter function: Function to invoke
     */
-    public func each (_ function: (Bound) -> ()) {
+    public func each (_ function: @noescape (Bound) -> ()) {
         for i in self {
             function(i)
         }

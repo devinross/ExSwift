@@ -52,7 +52,7 @@ public class ExSwift {
         - parameter function: Function to wrap
         - returns: Wrapper function
     */
-    /*public class func after <T> (n: Int, function: Void -> T) -> (Void -> T?) {
+    /*public class func after <T> (n: Int, function: @noescape Void -> T) -> (Void -> T?) {
         func callAfter (args: Any?...) -> T {
             return function()
         }
@@ -97,7 +97,7 @@ public class ExSwift {
         - parameter function: Function to wrap
         - returns: Wrapper function
     */
-    /*public class func once <T> (function: Void -> T) -> (Void -> T) {
+    /*public class func once <T> (function: @noescape Void -> T) -> (Void -> T) {
         let f = ExSwift.once {
             (params: Any?...) -> T in
             return function()
