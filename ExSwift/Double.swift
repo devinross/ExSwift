@@ -15,7 +15,7 @@ public extension Double {
     
         - returns: fabs(self)
     */
-    func abs () -> Double {
+    public func abs () -> Double {
         return Foundation.fabs(self)
     }
     
@@ -24,7 +24,7 @@ public extension Double {
     
         - returns: sqrt(self)
     */
-    func sqrt () -> Double {
+    public func sqrt () -> Double {
         return Foundation.sqrt(self)
     }
     
@@ -33,7 +33,7 @@ public extension Double {
     
         - returns: floor(self)
     */
-    func floor () -> Double {
+    public func floor () -> Double {
         return Foundation.floor(self)
     }
     
@@ -42,7 +42,7 @@ public extension Double {
     
         - returns: ceil(self)
     */
-    func ceil () -> Double {
+    public func ceil () -> Double {
         return Foundation.ceil(self)
     }
     
@@ -51,7 +51,7 @@ public extension Double {
     
         - returns: round(self)
     */
-    func round () -> Double {
+    public func round () -> Double {
         return Foundation.round(self)
     }
     
@@ -62,7 +62,7 @@ public extension Double {
         - parameter max: Upper bound
         - returns: Clamped value
     */
-    func clamp (_ min: Double, _ max: Double) -> Double {
+    public func clamp (_ min: Double, _ max: Double) -> Double {
         return Swift.max(min, Swift.min(max, self))
     }
     
@@ -72,7 +72,7 @@ public extension Double {
     
         :params: increment the increment to round to
     */
-    func roundToNearest(_ increment: Double) -> Double {
+    public func roundToNearest(_ increment: Double) -> Double {
         let remainder = self.truncatingRemainder(dividingBy: increment)
         return remainder < increment / 2 ? self - remainder : self - remainder + increment
     }
@@ -84,7 +84,7 @@ public extension Double {
         :params: max
         - returns: Random number
     */
-    static func random(_ min: Double = 0, max: Double) -> Double {
+    public static func random(_ min: Double = 0, max: Double) -> Double {
         let diff = max - min;
         let rand = Double(arc4random() % (UInt32(RAND_MAX) + 1))
         return ((rand / Double(RAND_MAX)) * diff) + min;

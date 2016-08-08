@@ -8,14 +8,14 @@
 
 import Foundation
 
-internal extension AnySequence {
+public extension AnySequence {
 
     /**
         First element of the sequence.
     
         - returns: First element of the sequence if present
     */
-    var first: Element? {
+    public var first: Element? {
         let generator =  self.makeIterator()
         return generator.next()
     }
@@ -26,7 +26,7 @@ internal extension AnySequence {
         - parameter call: Function to call for each element
         - returns: True if call returns true for any element of self
     */
-    func any (_ call: (Element) -> Bool) -> Bool {
+    public func any (_ call: (Element) -> Bool) -> Bool {
         let generator =  self.makeIterator()
         while let nextItem = generator.next() {
             if call(nextItem) {
@@ -42,7 +42,7 @@ internal extension AnySequence {
         - parameter index:
         - returns: Object at index in sequence, nil if index is out of bounds
     */
-    func get (_ index: Int) -> Element? {
+    public func get (_ index: Int) -> Element? {
         let generator =  self.makeIterator()
         for _ in 0..<(index - 1) {
             _ = generator.next()
@@ -56,7 +56,7 @@ internal extension AnySequence {
         - parameter range:
         - returns: Subsequence in range
     */
-    func get (_ range: Range<Int>) -> AnySequence<Element> {
+    public func get (_ range: Range<Int>) -> AnySequence<Element> {
         return self.skip(range.lowerBound).take(range.upperBound - range.lowerBound)
     }
     
@@ -66,7 +66,7 @@ internal extension AnySequence {
         - parameter item: The item to search for
         - returns: Index of the matched item or nil
     */
-    func indexOf <U: Equatable> (_ item: U) -> Int? {
+    public func indexOf <U: Equatable> (_ item: U) -> Int? {
         var index = 0
         for current in self {
             if let equatable = current as? U {
@@ -85,7 +85,7 @@ internal extension AnySequence {
         - parameter n: Number of elements to skip
         - returns: Sequence from n to the end
     */
-    func skip (_ n: Int) -> AnySequence<Element> {
+    public func skip (_ n: Int) -> AnySequence<Element> {
         let generator =  self.makeIterator()
         for _ in 0..<n {
             _ = generator.next()
@@ -99,7 +99,7 @@ internal extension AnySequence {
         - parameter include: Function invoked to test elements for inclusion in the sequence
         - returns: Filtered sequence
     */
-    func filter(_ include: (Element) -> Bool) -> AnySequence<Element> {
+    public func filter(_ include: (Element) -> Bool) -> AnySequence<Element> {
         return AnySequence(self.filter(include))
     }
     
@@ -109,7 +109,7 @@ internal extension AnySequence {
         - parameter exclude: Function invoked to test elements for exlcusion from the sequence
         - returns: Filtered sequence
     */
-    func reject (_ exclude: ((Element) -> Bool)) -> AnySequence<Element> {
+    public func reject (_ exclude: ((Element) -> Bool)) -> AnySequence<Element> {
         return self.filter {
             return !exclude($0)
         }
@@ -121,7 +121,7 @@ internal extension AnySequence {
         - parameter condition: A function which returns a boolean if an element satisfies a given condition or not
         - returns: Elements of the sequence starting with the element which does not meet the condition
     */
-    func skipWhile(_ condition:(Element) -> Bool) -> AnySequence<Element> {
+    public func skipWhile(_ condition:(Element) -> Bool) -> AnySequence<Element> {
         let generator =  self.makeIterator()
         let checkingGenerator = self.makeIterator()
         
@@ -144,7 +144,7 @@ internal extension AnySequence {
         - parameter item: The item to search for
         - returns: true if self contains item
     */
-    func contains<Element:Equatable> (_ item: Element) -> Bool {
+    public func contains<Element:Equatable> (_ item: Element) -> Bool {
         let generator =  self.makeIterator()
         while let nextItem = generator.next() {
             if nextItem as! Element == item {
@@ -160,7 +160,7 @@ internal extension AnySequence {
         - parameter n: Number of elements to take
         - returns: First n elements
     */
-    func take (_ n: Int) -> AnySequence<Element> {
+    public func take (_ n: Int) -> AnySequence<Element> {
         return AnySequence(TakeSequence(self, n))
     }
     
@@ -170,7 +170,7 @@ internal extension AnySequence {
         - parameter condition: A function which returns a boolean if an element satisfies a given condition or not.
         - returns: Elements of the sequence up until an element does not meet the condition
     */
-    func takeWhile (_ condition:(Element?) -> Bool) -> AnySequence<Element>  {
+    public func takeWhile (_ condition:(Element?) -> Bool) -> AnySequence<Element>  {
         return AnySequence(TakeWhileSequence(self, condition))
     }
 
@@ -179,7 +179,7 @@ internal extension AnySequence {
 	
         - returns: Each element of the sequence in an array
     */
-    func toArray () -> [Element] {
+    public func toArray () -> [Element] {
         var result: [Element] = []
         for item in self {
             result.append(item)

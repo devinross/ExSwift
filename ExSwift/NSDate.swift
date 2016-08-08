@@ -264,22 +264,22 @@ extension Date: Strideable {
 }
 // MARK: Arithmetic
 
-func +(date: Date, timeInterval: Int) -> Date {
+public func +(date: Date, timeInterval: Int) -> Date {
     return date + Double(timeInterval)
 }
 
-func -(date: Date, timeInterval: Int) -> Date {
+public func -(date: Date, timeInterval: Int) -> Date {
     return date - Double(timeInterval)
 }
 
-func +=(date: inout Date, timeInterval: Int) {
+public func +=(date: inout Date, timeInterval: Int) {
     date = date + timeInterval
 }
 
-func -=(date: inout Date, timeInterval: Int) {
+public func -=(date: inout Date, timeInterval: Int) {
     date = date - timeInterval
 }
 
-func -(date: Date, otherDate: Date) -> TimeInterval {
+public func -(date: Date, otherDate: Date) -> TimeInterval {
     return date.timeIntervalSince(otherDate)
 }

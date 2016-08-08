@@ -8,14 +8,14 @@
 
 import Foundation
 
-internal extension CountableRange {
+public extension CountableRange {
     
     /**
         For each element in the range invokes function.
         
         - parameter function: Function to call
     */
-    func times (_ function: @noescape () -> ()) {
+    public func times (_ function: @noescape () -> ()) {
         each { (current: Bound) -> () in
             function()
         }
@@ -26,7 +26,7 @@ internal extension CountableRange {
     
         - parameter function: Function to invoke
     */
-    func times (_ function: @noescape (Bound) -> ()) {
+    public func times (_ function: @noescape (Bound) -> ()) {
         each (function)
     }
 
@@ -35,7 +35,7 @@ internal extension CountableRange {
     
         - parameter function: Function to invoke
     */
-    func each (_ function: @noescape (Bound) -> ()) {
+    public func each (_ function: @noescape (Bound) -> ()) {
         for i in self {
             function(i)
         }
@@ -46,7 +46,7 @@ internal extension CountableRange {
 	
 		- returns: Each element of the range in an array
 	*/
-    func toArray () -> [Bound] {
+    public func toArray () -> [Bound] {
         var result: [Bound] = []
         for i in self {
             result.append(i)
@@ -61,7 +61,7 @@ internal extension CountableRange {
         - parameter to: Upper bound
         - returns: Random range
     */
-    static func random (_ from: Int, to: Int) -> CountableClosedRange<Int> {
+    public static func random (_ from: Int, to: Int) -> CountableClosedRange<Int> {
         let lowerBound = Int.random(from, max: to)
         let upperBound = Int.random(lowerBound, max: to)
         
@@ -70,14 +70,14 @@ internal extension CountableRange {
 
 }
 
-internal extension CountableClosedRange {
+public extension CountableClosedRange {
     
     /**
         For each element in the range invokes function.
         
         - parameter function: Function to call
     */
-    func times (_ function: () -> ()) {
+    public func times (_ function: () -> ()) {
         each { (current: Bound) -> () in
             function()
         }
@@ -88,7 +88,7 @@ internal extension CountableClosedRange {
     
         - parameter function: Function to invoke
     */
-    func times (_ function: (Bound) -> ()) {
+    public func times (_ function: (Bound) -> ()) {
         each (function)
     }
 
@@ -97,7 +97,7 @@ internal extension CountableClosedRange {
     
         - parameter function: Function to invoke
     */
-    func each (_ function: (Bound) -> ()) {
+    public func each (_ function: (Bound) -> ()) {
         for i in self {
             function(i)
         }
@@ -108,7 +108,7 @@ internal extension CountableClosedRange {
 	
 		- returns: Each element of the range in an array
 	*/
-    func toArray () -> [Bound] {
+    public func toArray () -> [Bound] {
         var result: [Bound] = []
         for i in self {
             result.append(i)
@@ -123,7 +123,7 @@ internal extension CountableClosedRange {
         - parameter to: Upper bound
         - returns: Random range
     */
-    static func random (_ from: Int, to: Int) -> CountableClosedRange<Int> {
+    public static func random (_ from: Int, to: Int) -> CountableClosedRange<Int> {
         let lowerBound = Int.random(from, max: to)
         let upperBound = Int.random(lowerBound, max: to)
         

@@ -15,7 +15,7 @@ public extension Float {
         
         - returns: fabs(self)
     */
-    func abs () -> Float {
+    public func abs () -> Float {
         return fabsf(self)
     }
 
@@ -24,7 +24,7 @@ public extension Float {
     
         - returns: sqrtf(self)
     */
-    func sqrt () -> Float {
+    public func sqrt () -> Float {
         return sqrtf(self)
     }
     
@@ -33,7 +33,7 @@ public extension Float {
     
         - returns: floorf(self)
     */
-    func floor () -> Float {
+    public func floor () -> Float {
         return floorf(self)
     }
     
@@ -42,7 +42,7 @@ public extension Float {
     
         - returns: ceilf(self)
     */
-    func ceil () -> Float {
+    public func ceil () -> Float {
         return ceilf(self)
     }
     
@@ -51,7 +51,7 @@ public extension Float {
     
         - returns: roundf(self)
     */
-    func round () -> Float {
+    public func round () -> Float {
         return roundf(self)
     }
         
@@ -62,7 +62,7 @@ public extension Float {
         - parameter max: Upper bound
         - returns: Clamped value
     */
-    func clamp (_ min: Float, _ max: Float) -> Float {
+    public func clamp (_ min: Float, _ max: Float) -> Float {
         return Swift.max(min, Swift.min(max, self))
     }
     
@@ -73,7 +73,7 @@ public extension Float {
         - parameter max:
         - returns: Random number
     */
-    static func random(_ min: Float = 0, max: Float) -> Float {
+    public static func random(_ min: Float = 0, max: Float) -> Float {
         let diff = max - min;
         let rand = Float(arc4random() % (UInt32(RAND_MAX) + 1))
         return ((rand / Float(RAND_MAX)) * diff) + min;
