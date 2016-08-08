@@ -445,7 +445,7 @@ internal extension Array {
 
         - returns: Max value in terms of call(value)
     */
-    func maxBy <U: Comparable> (_ call: (Element) -> (U)) -> Element? {
+    func maxBy <U: Comparable> (_ call: @noescape (Element) -> (U)) -> Element? {
 
         if let firstValue = self.first {
             var maxElement: Element = firstValue
@@ -470,7 +470,7 @@ internal extension Array {
 
         - returns: Min value in terms of call(value)
     */
-    func minBy <U: Comparable> (_ call: (Element) -> (U)) -> Element? {
+    func minBy <U: Comparable> (_ call: @noescape (Element) -> (U)) -> Element? {
 
         if let firstValue = self.first {
             var minElement: Element = firstValue
@@ -495,7 +495,7 @@ internal extension Array {
     
         - parameter call: Function to call for each element
     */
-    func each (_ call: (Element) -> ()) {
+    func each (_ call: @noescape (Element) -> ()) {
 
         for item in self {
             call(item)
@@ -508,7 +508,7 @@ internal extension Array {
     
         - parameter call: Function to call for each element
     */
-    func each (_ call: (Int, Element) -> ()) {
+    func each (_ call: @noescape (Int, Element) -> ()) {
 
         for (index, item) in self.enumerated() {
             call(index, item)
@@ -521,7 +521,7 @@ internal extension Array {
     
         - parameter call: Function to call for each element
     */
-    @available(*, unavailable, message: "use 'reverse().each' instead") func eachRight (_ call: (Element) -> ()) {
+    @available(*, unavailable, message: "use 'reverse().each' instead") func eachRight (_ call: @noescape (Element) -> ()) {
         reversed().each(call)
     }
 
@@ -530,7 +530,7 @@ internal extension Array {
     
         - parameter call: Function to call for each element
     */
-    @available(*, unavailable, message: "use 'reverse().each' instead") func eachRight (_ call: (Int, Element) -> ()) {
+    @available(*, unavailable, message: "use 'reverse().each' instead") func eachRight (_ call: @noescape (Int, Element) -> ()) {
         for (index, item) in reversed().enumerated() {
             call(count - index - 1, item)
         }
@@ -558,7 +558,7 @@ internal extension Array {
         - parameter test: Function to call for each element
         - returns: True if test returns true for all the elements in self
     */
-    func all (_ test: (Element) -> Bool) -> Bool {
+    func all (_ test: @noescape (Element) -> Bool) -> Bool {
         for item in self {
             if !test(item) {
                 return false
@@ -574,7 +574,7 @@ internal extension Array {
         - parameter exclude: Function invoked to test elements for the exclusion from the array
         - returns: Filtered array
     */
-    func reject (_ exclude: ((Element) -> Bool)) -> Array {
+    func reject (_ exclude: (Element) -> Bool) -> Array {
         return filter {
             return !exclude($0)
         }
@@ -596,7 +596,7 @@ internal extension Array {
         - parameter condition: A function which returns a boolean if an element satisfies a given condition or not.
         - returns: Elements of the array up until an element does not meet the condition
     */
-    func takeWhile (_ condition: (Element) -> Bool) -> Array {
+    func takeWhile (_ condition: @noescape (Element) -> Bool) -> Array {
 
         var lastTrue = -1
 
@@ -746,7 +746,7 @@ internal extension Array {
             endArray += [array]
         }
         for i in 0 ..< n {
-            permutationHelper(n - 1, array: &array, endArray: &endArray)
+            _ = permutationHelper(n - 1, array: &array, endArray: &endArray)
             let j = n % 2 == 0 ? i : 0;
             //(array[j], array[n - 1]) = (array[n - 1], array[j])
             let temp: Element = array[j]
@@ -1307,7 +1307,7 @@ internal extension Array {
         - parameter range:
         - returns: Array of values
     */
-    @available(*, unavailable, message: "use the '[U](range)' constructor") func range <U: Comparable> (_ range: Range<U>) -> [U] {
+    @available(*, unavailable, message: "use the '[U](range)' constructor") func range <U: Comparable> (_ range: CountableRange<U>) -> [U] {
         return [U](range)
     }
 
@@ -1327,26 +1327,6 @@ internal extension Array {
         }
             
         return Array(self[start ..< end] as ArraySlice<Element>)
-    }
-
-    /**
-        Returns a subarray whose items are in the given interval in self.
-    
-        - parameter interval: Interval of indexes of the subarray elements
-        - returns: Subarray or nil if the index is out of bounds
-    */
-    subscript (interval: Range<Int>) -> Array {
-        return self[rangeAsArray: interval.start ..< interval.end]
-    }
-    
-    /**
-        Returns a subarray whose items are in the given interval in self.
-    
-        - parameter interval: Interval of indexes of the subarray elements
-        - returns: Subarray or nil if the index is out of bounds
-    */
-    subscript (interval: ClosedRange<Int>) -> Array {
-        return self[rangeAsArray: interval.start ..< (interval.end + 1)]
     }
     
     /**

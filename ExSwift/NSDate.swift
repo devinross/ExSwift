@@ -32,41 +32,40 @@ public extension Date {
             var component = DateComponents()
             component.setValue(seconds, for: .second)
             
-            var date : Date! = calendar.date(byAdding: component, to: self, options: [])!
+            var date : Date! = calendar.date(byAdding: component, to: self, wrappingComponents: false)!
             component = DateComponents()
             component.setValue(minutes, for: .minute)
-            date = calendar.date(byAdding: component, to: date, options: [])!
+            date = calendar.date(byAdding: component, to: date, wrappingComponents: false)!
             
             component = DateComponents()
             component.setValue(hours, for: .hour)
-            date = calendar.date(byAdding: component, to: date, options: [])!
+            date = calendar.date(byAdding: component, to: date, wrappingComponents: false)!
             
             component = DateComponents()
             component.setValue(days, for: .day)
-            date = calendar.date(byAdding: component, to: date, options: [])!
+            date = calendar.date(byAdding: component, to: date, wrappingComponents: false)!
             
             component = DateComponents()
             component.setValue(weeks, for: .weekOfMonth)
-            date = calendar.date(byAdding: component, to: date, options: [])!
+            date = calendar.date(byAdding: component, to: date, wrappingComponents: false)!
             
             component = DateComponents()
             component.setValue(months, for: .month)
-            date = calendar.date(byAdding: component, to: date, options: [])!
+            date = calendar.date(byAdding: component, to: date, wrappingComponents: false)!
             
             component = DateComponents()
             component.setValue(years, for: .year)
-            date = calendar.date(byAdding: component, to: date, options: [])!
+            date = calendar.date(byAdding: component, to: date, wrappingComponents: false)!
             return date
         }
     
-        let options = Calendar.Options(rawValue: 0)
-        var date : Date! = calendar.date(byAdding: Calendar.Unit.second, value: seconds, to: self, options: options)
-        date = calendar.date(byAdding: Calendar.Unit.minute, value: minutes, to: date, options: options)
-        date = calendar.date(byAdding: Calendar.Unit.day, value: days, to: date, options: options)
-        date = calendar.date(byAdding: Calendar.Unit.hour, value: hours, to: date, options: options)
-        date = calendar.date(byAdding: Calendar.Unit.weekOfMonth, value: weeks, to: date, options: options)
-        date = calendar.date(byAdding: Calendar.Unit.month, value: months, to: date, options: options)
-        date = calendar.date(byAdding: Calendar.Unit.year, value: years, to: date, options: options)
+        var date : Date! = calendar.date(byAdding: Calendar.Component.second, value: seconds, to: self, wrappingComponents: false)
+        date = calendar.date(byAdding: Calendar.Component.minute, value: minutes, to: date, wrappingComponents: false)
+        date = calendar.date(byAdding: Calendar.Component.day, value: days, to: date, wrappingComponents: false)
+        date = calendar.date(byAdding: Calendar.Component.hour, value: hours, to: date, wrappingComponents: false)
+        date = calendar.date(byAdding: Calendar.Component.weekOfMonth, value: weeks, to: date, wrappingComponents: false)
+        date = calendar.date(byAdding: Calendar.Component.month, value: months, to: date, wrappingComponents: false)
+        date = calendar.date(byAdding: Calendar.Component.year, value: years, to: date, wrappingComponents: false)
         return date
     }
     
@@ -248,11 +247,9 @@ public extension Date {
         - returns: the value of the component
     */
 
-    public func getComponent (_ component : Calendar.Unit) -> Int {
+    public func getComponent (_ component : Calendar.Component) -> Int {
         let calendar = Calendar.current
-        let components = calendar.components(component, from: self)
-
-        return components.value(forComponent: component)
+        return calendar.component(component, from: self)
     }
 }
 
@@ -268,11 +265,11 @@ extension Date: Strideable {
 // MARK: Arithmetic
 
 func +(date: Date, timeInterval: Int) -> Date {
-    return date + TimeInterval(timeInterval)
+    return date + Double(timeInterval)
 }
 
 func -(date: Date, timeInterval: Int) -> Date {
-    return date - TimeInterval(timeInterval)
+    return date - Double(timeInterval)
 }
 
 func +=(date: inout Date, timeInterval: Int) {
@@ -283,33 +280,6 @@ func -=(date: inout Date, timeInterval: Int) {
     date = date - timeInterval
 }
 
-func +(date: Date, timeInterval: Double) -> Date {
-    return date.addingTimeInterval(TimeInterval(timeInterval))
-}
-
-func -(date: Date, timeInterval: Double) -> Date {
-    return date.addingTimeInterval(TimeInterval(-timeInterval))
-}
-
-func +=(date: inout Date, timeInterval: Double) {
-    date = date + timeInterval
-}
-
-func -=(date: inout Date, timeInterval: Double) {
-    date = date - timeInterval
-}
-
 func -(date: Date, otherDate: Date) -> TimeInterval {
     return date.timeIntervalSince(otherDate)
-}
-
-public func ==(lhs: Date, rhs: Date) -> Bool {
-    return lhs.compare(rhs) == ComparisonResult.orderedSame
-}
-
-extension Date: Comparable {
-}
-
-public func <(lhs: Date, rhs: Date) -> Bool {
-    return lhs.compare(rhs) == ComparisonResult.orderedAscending
 }

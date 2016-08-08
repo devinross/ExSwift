@@ -16,7 +16,7 @@ public extension Int {
         - parameter function: Function to call
     */
     func times <T> (_ function: (Void) -> T) {
-        (0..<self).each { _ in function(); return }
+        (0..<self).each { _ in _ = function(); return }
     }
 
     /**
@@ -34,7 +34,7 @@ public extension Int {
         - parameter function: Function to call
     */
     func times <T> (_ function: (Int) -> T) {
-        (0..<self).each { index in function(index); return }
+        (0..<self).each { index in _ = function(index); return }
     }
 
     /**

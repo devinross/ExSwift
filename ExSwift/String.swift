@@ -16,11 +16,6 @@ public extension String {
     var length: Int { return self.characters.count }
 
     /**
-        self.capitalizedString shorthand
-    */
-    var capitalized: String { return capitalized }
-
-    /**
         Returns the substring in the given range
 
         - parameter range:
@@ -101,11 +96,11 @@ public extension String {
         - parameter ignoreCase: true for case insensitive matching
         - returns: Matches found (as [NSTextCheckingResult])
     */
-    func matches (_ pattern: String, ignoreCase: Bool = false) throws -> [TextCheckingResult]? {
+    func matches (_ pattern: String, ignoreCase: Bool = false) throws -> [NSTextCheckingResult]? {
 
         if let regex = try ExSwift.regex(pattern, ignoreCase: ignoreCase) {
             //  Using map to prevent a possible bug in the compiler
-            return regex.matches(in: self, options: [], range: NSMakeRange(0, length)).map { $0 as TextCheckingResult }
+            return regex.matches(in: self, options: [], range: NSMakeRange(0, length)).map { $0 as NSTextCheckingResult }
         }
 
         return nil
@@ -308,7 +303,7 @@ public extension String {
     func toDate(_ format : String? = "yyyy-MM-dd") -> Date? {
         let text = self.trimmed().lowercased()
         let dateFmt = DateFormatter()
-        dateFmt.timeZone = TimeZone.default
+        dateFmt.timeZone = TimeZone.current
         if let fmt = format {
             dateFmt.dateFormat = fmt
         }
@@ -353,7 +348,7 @@ public func =~ (string: String, pattern: String) throws -> Bool {
 }
 
 //  Pattern matching using a regular expression
-public func =~ (string: String, regex: RegularExpression) -> Bool {
+public func =~ (string: String, regex: NSRegularExpression) -> Bool {
 
     let matches = regex.numberOfMatches(in: string, options: [], range: NSMakeRange(0, string.length))
 

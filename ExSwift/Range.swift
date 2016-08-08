@@ -8,15 +8,15 @@
 
 import Foundation
 
-internal extension Range {
+internal extension CountableRange {
     
     /**
         For each element in the range invokes function.
         
         - parameter function: Function to call
     */
-    func times (_ function: () -> ()) {
-        each { (current: Element) -> () in
+    func times (_ function: @noescape () -> ()) {
+        each { (current: Bound) -> () in
             function()
         }
     }
@@ -26,7 +26,7 @@ internal extension Range {
     
         - parameter function: Function to invoke
     */
-    func times (_ function: (Element) -> ()) {
+    func times (_ function: @noescape (Bound) -> ()) {
         each (function)
     }
 
@@ -35,7 +35,7 @@ internal extension Range {
     
         - parameter function: Function to invoke
     */
-    func each (_ function: (Element) -> ()) {
+    func each (_ function: @noescape (Bound) -> ()) {
         for i in self {
             function(i)
         }
@@ -46,8 +46,8 @@ internal extension Range {
 	
 		- returns: Each element of the range in an array
 	*/
-    func toArray () -> [Element] {
-        var result: [Element] = []
+    func toArray () -> [Bound] {
+        var result: [Bound] = []
         for i in self {
             result.append(i)
         }
@@ -61,7 +61,69 @@ internal extension Range {
         - parameter to: Upper bound
         - returns: Random range
     */
-    static func random (_ from: Int, to: Int) -> CountableRange<Int> {
+    static func random (_ from: Int, to: Int) -> CountableClosedRange<Int> {
+        let lowerBound = Int.random(from, max: to)
+        let upperBound = Int.random(lowerBound, max: to)
+        
+        return lowerBound...upperBound
+    }
+
+}
+
+internal extension CountableClosedRange {
+    
+    /**
+        For each element in the range invokes function.
+        
+        - parameter function: Function to call
+    */
+    func times (_ function: () -> ()) {
+        each { (current: Bound) -> () in
+            function()
+        }
+    }
+
+    /**
+        For each element in the range invokes function passing the element as argument.
+    
+        - parameter function: Function to invoke
+    */
+    func times (_ function: (Bound) -> ()) {
+        each (function)
+    }
+
+    /**
+        For each element in the range invokes function passing the element as argument.
+    
+        - parameter function: Function to invoke
+    */
+    func each (_ function: (Bound) -> ()) {
+        for i in self {
+            function(i)
+        }
+    }
+
+	/**
+		Returns each element of the range in an array
+	
+		- returns: Each element of the range in an array
+	*/
+    func toArray () -> [Bound] {
+        var result: [Bound] = []
+        for i in self {
+            result.append(i)
+        }
+        return result
+    }
+
+    /**
+        Range of Int with random bounds between from and to (inclusive).
+    
+        - parameter from: Lower bound
+        - parameter to: Upper bound
+        - returns: Random range
+    */
+    static func random (_ from: Int, to: Int) -> CountableClosedRange<Int> {
         let lowerBound = Int.random(from, max: to)
         let upperBound = Int.random(lowerBound, max: to)
         
