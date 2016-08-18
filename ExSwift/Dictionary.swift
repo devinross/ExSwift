@@ -68,7 +68,7 @@ public extension Dictionary {
         - parameter values: Dictionaries to intersect
         - returns: Dictionary of [key: value] couples contained in all the dictionaries and self
     */
-    public func intersection <K, V where K: Equatable, V: Equatable> (_ dictionaries: [K: V]...) -> [K: V] {
+    public func intersection <K, V> (_ dictionaries: [K: V]...) -> [K: V] where K: Equatable, V: Equatable {
 
         //  Casts self from [Key: Value] to [K: V]
         let filtered = mapFilter { (item, value) -> (K, V)? in
