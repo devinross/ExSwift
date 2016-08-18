@@ -18,7 +18,7 @@ public extension NSArray {
     public func cast <OutType> () -> [OutType] {
         var result = [OutType]()
         
-        for item : AnyObject in self {
+        for item : Any in self {
             result += Ex.bridgeObjCObject(item) as [OutType]
         }
         
@@ -44,12 +44,12 @@ public extension NSArray {
     }
     
     /**
-        Flattens a multidimensional NSArray to a [AnyObject].
+        Flattens a multidimensional NSArray to a [Any].
     
         - returns: Flattened array
     */
-    public func flattenAny () -> [AnyObject] {
-        var result = [AnyObject]()
+    public func flattenAny () -> [Any] {
+        var result = [Any]()
         
         for item in self {
             if let array = item as? NSArray {

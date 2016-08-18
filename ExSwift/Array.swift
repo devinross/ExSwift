@@ -1111,12 +1111,12 @@ public extension Array {
     }
 
     /**
-        Flattens a nested Array self to an array of AnyObject.
+        Flattens a nested Array self to an array of Any.
     
         - returns: Flattened array
     */
-    public func flattenAny () -> [AnyObject] {
-        var result = [AnyObject]()
+    public func flattenAny () -> [Any] {
+        var result = [Any]()
         
         for item in self {
             if let array = item as? NSArray {
