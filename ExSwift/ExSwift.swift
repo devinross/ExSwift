@@ -24,7 +24,7 @@ public class ExSwift {
         - parameter function: Function to wrap
         - returns: Wrapper function
     */
-    public class func after <P, T> (_ n: Int, function: (P...) -> T) -> ((P...) -> T?) {
+    public class func after <P, T> (_ n: Int, function: @escaping (P...) -> T) -> ((P...) -> T?) {
         
         typealias Function = ([P]) -> T
     
@@ -52,7 +52,7 @@ public class ExSwift {
         - parameter function: Function to wrap
         - returns: Wrapper function
     */
-    /*public class func after <T> (n: Int, function: @noescape Void -> T) -> (Void -> T?) {
+    /*public class func after <T> (n: Int, function: Void -> T) -> (Void -> T?) {
         func callAfter (args: Any?...) -> T {
             return function()
         }
@@ -69,7 +69,7 @@ public class ExSwift {
         - parameter function: Function to wrap
         - returns: Wrapper function
     */
-    public class func once <P, T> (_ function: (P...) -> T) -> ((P...) -> T) {
+    public class func once <P, T> (_ function: @escaping (P...) -> T) -> ((P...) -> T) {
         
         typealias Function = ([P]) -> T
     
@@ -97,7 +97,7 @@ public class ExSwift {
         - parameter function: Function to wrap
         - returns: Wrapper function
     */
-    /*public class func once <T> (function: @noescape Void -> T) -> (Void -> T) {
+    /*public class func once <T> (function: Void -> T) -> (Void -> T) {
         let f = ExSwift.once {
             (params: Any?...) -> T in
             return function()
@@ -114,7 +114,7 @@ public class ExSwift {
         - parameter parameters: Arguments to prepend
         - returns: Wrapper function
     */
-    public class func partial <P, T> (_ function: (P...) -> T, _ parameters: P...) -> ((P...) -> T) {
+    public class func partial <P, T> (_ function: @escaping (P...) -> T, _ parameters: P...) -> ((P...) -> T) {
         typealias Function = ([P]) -> T
 
         return { (params: P...) -> T in
@@ -131,7 +131,7 @@ public class ExSwift {
         - parameter parameters: Arguments to pass to function
         - returns: Wrapper function
     */
-    public class func bind <P, T> (_ function: (P...) -> T, _ parameters: P...) -> ((Void) -> T) {
+    public class func bind <P, T> (_ function: @escaping (P...) -> T, _ parameters: P...) -> ((Void) -> T) {
         typealias Function = ([P]) -> T
 
         return { Void -> T in
@@ -146,7 +146,7 @@ public class ExSwift {
         - parameter function: Function with one parameter to cache
         - returns: Wrapper function
     */
-    public class func cached <P: Hashable, R> (_ function: (P) -> R) -> ((P) -> R) {
+    public class func cached <P: Hashable, R> (_ function: @escaping (P) -> R) -> ((P) -> R) {
         var cache = [P:R]()
         
         return { (param: P) -> R in
@@ -169,7 +169,7 @@ public class ExSwift {
         - parameter hash: Parameters based hashing function that computes the key used to store each result in the cache
         - returns: Wrapper function
     */
-    public class func cached <P: Hashable, R> (_ function: (P...) -> R, hash: ((P...) -> P)) -> ((P...) -> R) {
+    public class func cached <P: Hashable, R> (_ function: @escaping (P...) -> R, hash: (@escaping (P...) -> P)) -> ((P...) -> R) {
         typealias Function = ([P]) -> R
         typealias Hash = ([P]) -> P
         
@@ -197,7 +197,7 @@ public class ExSwift {
         - parameter function: Function to cache
         - returns: Wrapper function
     */
-    public class func cached <P: Hashable, R> (_ function: (P...) -> R) -> ((P...) -> R) {
+    public class func cached <P: Hashable, R> (_ function: @escaping (P...) -> R) -> ((P...) -> R) {
         return cached(function, hash: { (params: P...) -> P in return params[0] })
     }
     

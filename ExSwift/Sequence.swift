@@ -26,7 +26,7 @@ public extension AnySequence {
         - parameter call: Function to call for each element
         - returns: True if call returns true for any element of self
     */
-    public func any (_ call: @noescape (Element) -> Bool) -> Bool {
+    public func any (_ call: (Element) -> Bool) -> Bool {
         let generator =  self.makeIterator()
         while let nextItem = generator.next() {
             if call(nextItem) {
@@ -99,7 +99,7 @@ public extension AnySequence {
         - parameter include: Function invoked to test elements for inclusion in the sequence
         - returns: Filtered sequence
     */
-    public func filter(_ include: @noescape (Element) -> Bool) -> AnySequence<Element> {
+    public func filter(_ include: (Element) -> Bool) -> AnySequence<Element> {
         return AnySequence(self.filter(include))
     }
     
@@ -109,7 +109,7 @@ public extension AnySequence {
         - parameter exclude: Function invoked to test elements for exlcusion from the sequence
         - returns: Filtered sequence
     */
-    public func reject (_ exclude: (@noescape (Element) -> Bool)) -> AnySequence<Element> {
+    public func reject (_ exclude: ((Element) -> Bool)) -> AnySequence<Element> {
         return self.filter {
             return !exclude($0)
         }
@@ -121,7 +121,7 @@ public extension AnySequence {
         - parameter condition: A function which returns a boolean if an element satisfies a given condition or not
         - returns: Elements of the sequence starting with the element which does not meet the condition
     */
-    public func skipWhile(_ condition:@noescape (Element) -> Bool) -> AnySequence<Element> {
+    public func skipWhile(_ condition:(Element) -> Bool) -> AnySequence<Element> {
         let generator =  self.makeIterator()
         let checkingGenerator = self.makeIterator()
         
@@ -170,7 +170,7 @@ public extension AnySequence {
         - parameter condition: A function which returns a boolean if an element satisfies a given condition or not.
         - returns: Elements of the sequence up until an element does not meet the condition
     */
-    public func takeWhile (_ condition:(Element?) -> Bool) -> AnySequence<Element>  {
+    public func takeWhile (_ condition:@escaping (Element?) -> Bool) -> AnySequence<Element>  {
         return AnySequence(TakeWhileSequence(self, condition))
     }
 
@@ -221,7 +221,7 @@ public struct TakeWhileSequence<S: Sequence>: Sequence {
     private let sequence: S
     private let condition: (S.Iterator.Element?) -> Bool
     
-    public init(_ sequence:S, _ condition:(S.Iterator.Element?) -> Bool) {
+    public init(_ sequence:S, _ condition:@escaping (S.Iterator.Element?) -> Bool) {
         self.sequence = sequence
         self.condition = condition
     }
