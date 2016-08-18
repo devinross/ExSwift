@@ -8,10 +8,10 @@
 
 import Foundation
 
-infix operator =~ {}
-infix operator |~ {}
-infix operator .. {}
-infix operator <=> {}
+infix operator =~
+infix operator |~
+infix operator ..
+infix operator <=>
 
 public typealias Ex = ExSwift
 
