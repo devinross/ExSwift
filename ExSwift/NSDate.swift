@@ -259,7 +259,7 @@ extension Date: Strideable {
     }
     
     public func advanced(by n: TimeInterval) -> Date {
-        return self.dynamicType.init(timeIntervalSinceReferenceDate: self.timeIntervalSinceReferenceDate + n)
+        return type(of: self).init(timeIntervalSinceReferenceDate: self.timeIntervalSinceReferenceDate + n)
     }
 }
 // MARK: Arithmetic
