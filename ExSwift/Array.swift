@@ -19,7 +19,7 @@ public extension Array {
         - returns: true if self contains all the items
     */
     public func contains <Element: Equatable> (_ items: Element...) -> Bool {
-        return items.all { (item: Element) -> Bool in self.indexOf(item) >= 0 }
+        return items.all { (item: Element) -> Bool in self.indexOf(item)! >= 0 }
     }
 
     /**
@@ -258,7 +258,7 @@ public extension Array {
             step = n
         }
 
-        if step < 1 { step = 1 } // Less than 1 results in an infinite loop.
+        if step! < 1 { step = 1 } // Less than 1 results in an infinite loop.
         if n < 1    { n = 0 }    // Allow 0 if user wants [[],[],[]] for some reason.
         if n > count { return [[]] }
 
@@ -290,7 +290,7 @@ public extension Array {
         }
 
         // Less than 1 results in an infinite loop.
-        if step < 1 {
+        if step! < 1 {
             step = 1
         }
         
@@ -338,7 +338,7 @@ public extension Array {
             step = n
         }
 
-        if step < 1 { step = 1 } // Less than 1 results in an infinite loop.
+        if step! < 1 { step = 1 } // Less than 1 results in an infinite loop.
         if n < 1    { n = 0 }    // Allow 0 if user wants [[],[],[]] for some reason.
 
         for i in stride(from: 0, through: count, by: step!) {
