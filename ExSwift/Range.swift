@@ -15,7 +15,7 @@ internal extension Range {
         
         - parameter function: Function to call
     */
-    func times (function: () -> ()) {
+    func times (_ function: @escaping () -> ()) {
         each { (current: Element) -> () in
             function()
         }
@@ -26,7 +26,7 @@ internal extension Range {
     
         - parameter function: Function to invoke
     */
-    func times (function: (Element) -> ()) {
+    func times (_ function: (Element) -> ()) {
         each (function)
     }
 
@@ -35,7 +35,7 @@ internal extension Range {
     
         - parameter function: Function to invoke
     */
-    func each (function: (Element) -> ()) {
+    func each (_ function: (Element) -> ()) {
         for i in self {
             function(i)
         }
@@ -61,7 +61,7 @@ internal extension Range {
         - parameter to: Upper bound
         - returns: Random range
     */
-    static func random (from: Int, to: Int) -> Range<Int> {
+    static func random (_ from: Int, to: Int) -> CountableRange<Int> {
         let lowerBound = Int.random(from, max: to)
         let upperBound = Int.random(lowerBound, max: to)
         
@@ -74,7 +74,7 @@ internal extension Range {
 *  Operator == to compare 2 ranges first, second by start & end indexes. If first.startIndex is equal to
 *  second.startIndex and first.endIndex is equal to second.endIndex the ranges are considered equal.
 */
-public func == <U: ForwardIndexType> (first: Range<U>, second: Range<U>) -> Bool {
-    return first.startIndex == second.startIndex &&
-           first.endIndex == second.endIndex
+public func == <U: Comparable> (first: Range<U>, second: Range<U>) -> Bool {
+    return first.lowerBound == second.lowerBound &&
+           first.upperBound == second.upperBound
 }
