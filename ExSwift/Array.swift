@@ -19,7 +19,24 @@ public extension Array {
         - returns: true if self contains all the items
     */
     public func contains <Element: Equatable> (_ items: Element...) -> Bool {
-        return items.all { (item: Element) -> Bool in self.indexOf(item)! >= 0 }
+		
+		return items.all { (item: Element) -> Bool in
+			self.filter({$0 as? Element == item}).count > 0
+		}
+		
+		//return self.filter({$0 as? T == obj}).count > 0
+
+//		
+//		print ("\nCHECK \(self)   => \(items)")
+//		
+//		for item in items{
+//			print("HMMM \(item) \(self.indexOf(item)) ")
+//		}
+//		
+//		
+//        return items.all { (item: Element) -> Bool in
+//			self.indexOf(item) >= 0
+//		}
     }
 
     /**
