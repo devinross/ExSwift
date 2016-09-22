@@ -8,7 +8,7 @@
 
 import Foundation
 
-public extension NSDate {
+public extension Date {
     
     // MARK:  NSDate Manipulation
     
@@ -24,49 +24,48 @@ public extension NSDate {
         - parameter years: number of years to add
         - returns: the NSDate computed
     */
-    public func add(seconds seconds: Int = 0, minutes: Int = 0, hours: Int = 0, days: Int = 0, weeks: Int = 0, months: Int = 0, years: Int = 0) -> NSDate {
-        let calendar = NSCalendar.currentCalendar()
+    public func add(seconds: Int = 0, minutes: Int = 0, hours: Int = 0, days: Int = 0, weeks: Int = 0, months: Int = 0, years: Int = 0) -> Date {
+        let calendar = Calendar.current
         let version = floor(NSFoundationVersionNumber)
     
         if version <= NSFoundationVersionNumber10_9_2 {
-            var component = NSDateComponents()
-            component.setValue(seconds, forComponent: .Second)
+            var component = DateComponents()
+            component.setValue(seconds, for: .second)
             
-            var date : NSDate! = calendar.dateByAddingComponents(component, toDate: self, options: [])!
-            component = NSDateComponents()
-            component.setValue(minutes, forComponent: .Minute)
-            date = calendar.dateByAddingComponents(component, toDate: date, options: [])!
+            var date : Date! = calendar.date(byAdding: component, to: self, wrappingComponents: false)!
+            component = DateComponents()
+            component.setValue(minutes, for: .minute)
+            date = calendar.date(byAdding: component, to: date, wrappingComponents: false)!
             
-            component = NSDateComponents()
-            component.setValue(hours, forComponent: .Hour)
-            date = calendar.dateByAddingComponents(component, toDate: date, options: [])!
+            component = DateComponents()
+            component.setValue(hours, for: .hour)
+            date = calendar.date(byAdding: component, to: date, wrappingComponents: false)!
             
-            component = NSDateComponents()
-            component.setValue(days, forComponent: .Day)
-            date = calendar.dateByAddingComponents(component, toDate: date, options: [])!
+            component = DateComponents()
+            component.setValue(days, for: .day)
+            date = calendar.date(byAdding: component, to: date, wrappingComponents: false)!
             
-            component = NSDateComponents()
-            component.setValue(weeks, forComponent: .WeekOfMonth)
-            date = calendar.dateByAddingComponents(component, toDate: date, options: [])!
+            component = DateComponents()
+            component.setValue(weeks, for: .weekOfMonth)
+            date = calendar.date(byAdding: component, to: date, wrappingComponents: false)!
             
-            component = NSDateComponents()
-            component.setValue(months, forComponent: .Month)
-            date = calendar.dateByAddingComponents(component, toDate: date, options: [])!
+            component = DateComponents()
+            component.setValue(months, for: .month)
+            date = calendar.date(byAdding: component, to: date, wrappingComponents: false)!
             
-            component = NSDateComponents()
-            component.setValue(years, forComponent: .Year)
-            date = calendar.dateByAddingComponents(component, toDate: date, options: [])!
+            component = DateComponents()
+            component.setValue(years, for: .year)
+            date = calendar.date(byAdding: component, to: date, wrappingComponents: false)!
             return date
         }
     
-        let options = NSCalendarOptions(rawValue: 0)
-        var date : NSDate! = calendar.dateByAddingUnit(NSCalendarUnit.Second, value: seconds, toDate: self, options: options)
-        date = calendar.dateByAddingUnit(NSCalendarUnit.Minute, value: minutes, toDate: date, options: options)
-        date = calendar.dateByAddingUnit(NSCalendarUnit.Day, value: days, toDate: date, options: options)
-        date = calendar.dateByAddingUnit(NSCalendarUnit.Hour, value: hours, toDate: date, options: options)
-        date = calendar.dateByAddingUnit(NSCalendarUnit.WeekOfMonth, value: weeks, toDate: date, options: options)
-        date = calendar.dateByAddingUnit(NSCalendarUnit.Month, value: months, toDate: date, options: options)
-        date = calendar.dateByAddingUnit(NSCalendarUnit.Year, value: years, toDate: date, options: options)
+        var date : Date! = calendar.date(byAdding: Calendar.Component.second, value: seconds, to: self, wrappingComponents: false)
+        date = calendar.date(byAdding: Calendar.Component.minute, value: minutes, to: date, wrappingComponents: false)
+        date = calendar.date(byAdding: Calendar.Component.day, value: days, to: date, wrappingComponents: false)
+        date = calendar.date(byAdding: Calendar.Component.hour, value: hours, to: date, wrappingComponents: false)
+        date = calendar.date(byAdding: Calendar.Component.weekOfMonth, value: weeks, to: date, wrappingComponents: false)
+        date = calendar.date(byAdding: Calendar.Component.month, value: months, to: date, wrappingComponents: false)
+        date = calendar.date(byAdding: Calendar.Component.year, value: years, to: date, wrappingComponents: false)
         return date
     }
     
@@ -76,7 +75,7 @@ public extension NSDate {
         - parameter seconds: number of seconds to add
         - returns: the NSDate computed
     */
-    public func addSeconds (seconds: Int) -> NSDate {
+    public func addSeconds (_ seconds: Int) -> Date {
         return add(seconds: seconds)
     }
     
@@ -86,7 +85,7 @@ public extension NSDate {
         - parameter minutes: number of minutes to add
         - returns: the NSDate computed
     */
-    public func addMinutes (minutes: Int) -> NSDate {
+    public func addMinutes (_ minutes: Int) -> Date {
         return add(minutes: minutes)
     }
     
@@ -96,7 +95,7 @@ public extension NSDate {
         - parameter hours: number of hours to add
         - returns: the NSDate computed
     */
-    public func addHours(hours: Int) -> NSDate {
+    public func addHours(_ hours: Int) -> Date {
         return add(hours: hours)
     }
     
@@ -106,7 +105,7 @@ public extension NSDate {
         - parameter days: number of days to add
         - returns: the NSDate computed
     */
-    public func addDays(days: Int) -> NSDate {
+    public func addDays(_ days: Int) -> Date {
         return add(days: days)
     }
     
@@ -116,7 +115,7 @@ public extension NSDate {
         - parameter weeks: number of weeks to add
         - returns: the NSDate computed
     */
-    public func addWeeks(weeks: Int) -> NSDate {
+    public func addWeeks(_ weeks: Int) -> Date {
         return add(weeks: weeks)
     }
     
@@ -128,7 +127,7 @@ public extension NSDate {
         - returns: the NSDate computed
     */
     
-    public func addMonths(months: Int) -> NSDate {
+    public func addMonths(_ months: Int) -> Date {
         return add(months: months)
     }
     
@@ -138,7 +137,7 @@ public extension NSDate {
         - parameter years: number of year to add
         - returns: the NSDate computed
     */
-    public func addYears(years: Int) -> NSDate {
+    public func addYears(_ years: Int) -> Date {
         return add(years: years)
     }
     
@@ -150,8 +149,8 @@ public extension NSDate {
         - parameter date: NSDate to compare
         - returns: True if self is after the input NSDate, false otherwise
     */
-    public func isAfter(date: NSDate) -> Bool{
-        return (self.compare(date) == NSComparisonResult.OrderedDescending)
+    public func isAfter(_ date: Date) -> Bool{
+        return (self.compare(date) == ComparisonResult.orderedDescending)
     }
     
     /**
@@ -160,8 +159,8 @@ public extension NSDate {
         - parameter date: NSDate to compare
         - returns: True if self is before the input NSDate, false otherwise
     */
-    public func isBefore(date: NSDate) -> Bool{
-        return (self.compare(date) == NSComparisonResult.OrderedAscending)
+    public func isBefore(_ date: Date) -> Bool{
+        return (self.compare(date) == ComparisonResult.orderedAscending)
     }
     
     
@@ -172,7 +171,7 @@ public extension NSDate {
     */
     public var year : Int {
         get {
-            return getComponent(.Year)
+            return getComponent(.year)
         }
     }
 
@@ -181,7 +180,7 @@ public extension NSDate {
     */
     public var month : Int {
         get {
-            return getComponent(.Month)
+            return getComponent(.month)
         }
     }
     
@@ -190,7 +189,7 @@ public extension NSDate {
     */
     public var weekday : Int {
         get {
-            return getComponent(.Weekday)
+            return getComponent(.weekday)
         }
     }
 
@@ -199,7 +198,7 @@ public extension NSDate {
     */
     public var weekMonth : Int {
         get {
-            return getComponent(.WeekOfMonth)
+            return getComponent(.weekOfMonth)
         }
     }
 
@@ -209,7 +208,7 @@ public extension NSDate {
     */
     public var days : Int {
         get {
-            return getComponent(.Day)
+            return getComponent(.day)
         }
     }
     
@@ -219,7 +218,7 @@ public extension NSDate {
     public var hours : Int {
         
         get {
-            return getComponent(.Hour)
+            return getComponent(.hour)
         }
     }
     
@@ -228,7 +227,7 @@ public extension NSDate {
     */
     public var minutes : Int {
         get {
-            return getComponent(.Minute)
+            return getComponent(.minute)
         }
     }
     
@@ -237,7 +236,7 @@ public extension NSDate {
     */
     public var seconds : Int {
         get {
-            return getComponent(.Second)
+            return getComponent(.second)
         }
     }
     
@@ -248,68 +247,39 @@ public extension NSDate {
         - returns: the value of the component
     */
 
-    public func getComponent (component : NSCalendarUnit) -> Int {
-        let calendar = NSCalendar.currentCalendar()
-        let components = calendar.components(component, fromDate: self)
-
-        return components.valueForComponent(component)
+    public func getComponent (_ component : Calendar.Component) -> Int {
+        let calendar = Calendar.current
+        return calendar.component(component, from: self)
     }
 }
 
-extension NSDate: Strideable {
-    public func distanceTo(other: NSDate) -> NSTimeInterval {
+extension Date: Strideable {
+    public func distance(to other: Date) -> TimeInterval {
         return other - self
     }
     
-    public func advancedBy(n: NSTimeInterval) -> Self {
-        return self.dynamicType.init(timeIntervalSinceReferenceDate: self.timeIntervalSinceReferenceDate + n)
+    public func advanced(by n: TimeInterval) -> Date {
+        return type(of: self).init(timeIntervalSinceReferenceDate: self.timeIntervalSinceReferenceDate + n)
     }
 }
 // MARK: Arithmetic
 
-func +(date: NSDate, timeInterval: Int) -> NSDate {
-    return date + NSTimeInterval(timeInterval)
+public func +(date: Date, timeInterval: Int) -> Date {
+    return date + Double(timeInterval)
 }
 
-func -(date: NSDate, timeInterval: Int) -> NSDate {
-    return date - NSTimeInterval(timeInterval)
+public func -(date: Date, timeInterval: Int) -> Date {
+    return date - Double(timeInterval)
 }
 
-func +=(inout date: NSDate, timeInterval: Int) {
+public func +=(date: inout Date, timeInterval: Int) {
     date = date + timeInterval
 }
 
-func -=(inout date: NSDate, timeInterval: Int) {
+public func -=(date: inout Date, timeInterval: Int) {
     date = date - timeInterval
 }
 
-func +(date: NSDate, timeInterval: Double) -> NSDate {
-    return date.dateByAddingTimeInterval(NSTimeInterval(timeInterval))
-}
-
-func -(date: NSDate, timeInterval: Double) -> NSDate {
-    return date.dateByAddingTimeInterval(NSTimeInterval(-timeInterval))
-}
-
-func +=(inout date: NSDate, timeInterval: Double) {
-    date = date + timeInterval
-}
-
-func -=(inout date: NSDate, timeInterval: Double) {
-    date = date - timeInterval
-}
-
-func -(date: NSDate, otherDate: NSDate) -> NSTimeInterval {
-    return date.timeIntervalSinceDate(otherDate)
-}
-
-public func ==(lhs: NSDate, rhs: NSDate) -> Bool {
-    return lhs.compare(rhs) == NSComparisonResult.OrderedSame
-}
-
-extension NSDate: Comparable {
-}
-
-public func <(lhs: NSDate, rhs: NSDate) -> Bool {
-    return lhs.compare(rhs) == NSComparisonResult.OrderedAscending
+public func -(date: Date, otherDate: Date) -> TimeInterval {
+    return date.timeIntervalSince(otherDate)
 }

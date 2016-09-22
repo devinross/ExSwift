@@ -13,12 +13,7 @@ public extension String {
     /**
         String length
     */
-    var length: Int { return self.characters.count }
-
-    /**
-        self.capitalizedString shorthand
-    */
-    var capitalized: String { return capitalizedString }
+    public var length: Int { return self.characters.count }
 
     /**
         Returns the substring in the given range
@@ -26,12 +21,12 @@ public extension String {
         - parameter range:
         - returns: Substring in range
     */
-    subscript (range: Range<Int>) -> String? {
-        if range.startIndex < 0 || range.endIndex > self.length {
+    public subscript (range: Range<Int>) -> String? {
+        if range.lowerBound < 0 || range.upperBound > self.length {
             return nil
         }
 
-        let range = Range(start: startIndex.advancedBy(range.startIndex), end: startIndex.advancedBy(range.endIndex))
+        let range = characters.index(startIndex, offsetBy: range.lowerBound) ..< characters.index(startIndex, offsetBy: range.upperBound)
 
         return self[range]
     }
@@ -45,7 +40,7 @@ public extension String {
         - parameter restOfIndexes:
         - returns: Charaters at the specified indexes (converted to String)
     */
-    subscript (firstIndex: Int, secondIndex: Int, restOfIndexes: Int...) -> [String] {
+    public subscript (firstIndex: Int, secondIndex: Int, restOfIndexes: Int...) -> [String] {
         return at([firstIndex, secondIndex] + restOfIndexes)
     }
 
@@ -56,7 +51,7 @@ public extension String {
         - parameter index: Position of the character to get
         - returns: Character as String or nil if the index is out of bounds
     */
-    subscript (index: Int) -> String? {
+    public subscript (index: Int) -> String? {
         if let char = Array(self.characters).get(index) {
             return String(char)
         }
@@ -70,7 +65,7 @@ public extension String {
         - parameter indexes: Positions of the elements to get
         - returns: Array of characters (as String)
     */
-    func at (indexes: Int...) -> [String] {
+    public func at (_ indexes: Int...) -> [String] {
         return indexes.map { self[$0]! }
     }
 
@@ -80,7 +75,7 @@ public extension String {
         - parameter indexes: Positions of the elements to get
         - returns: Array of characters (as String)
     */
-    func at (indexes: [Int]) -> [String] {
+    public func at (_ indexes: [Int]) -> [String] {
         return indexes.map { self[$0]! }
     }
 
@@ -90,7 +85,7 @@ public extension String {
         - parameter separator: Character used to split the string
         - returns: Array of substrings
     */
-    func explode (separator: Character) -> [String] {
+    public func explode (_ separator: Character) -> [String] {
       return self.characters.split { $0 == separator }.map { String($0) }
     }
 
@@ -101,11 +96,11 @@ public extension String {
         - parameter ignoreCase: true for case insensitive matching
         - returns: Matches found (as [NSTextCheckingResult])
     */
-    func matches (pattern: String, ignoreCase: Bool = false) throws -> [NSTextCheckingResult]? {
+    public func matches (_ pattern: String, ignoreCase: Bool = false) throws -> [NSTextCheckingResult]? {
 
         if let regex = try ExSwift.regex(pattern, ignoreCase: ignoreCase) {
             //  Using map to prevent a possible bug in the compiler
-            return regex.matchesInString(self, options: [], range: NSMakeRange(0, length)).map { $0 as NSTextCheckingResult }
+            return regex.matches(in: self, options: [], range: NSMakeRange(0, length)).map { $0 as NSTextCheckingResult }
         }
 
         return nil
@@ -119,10 +114,10 @@ public extension String {
     - parameter ignoreCase: true for case insensitive matching
     - returns: true if contains match, otherwise false
     */
-    func containsMatch (pattern: String, ignoreCase: Bool = false) throws -> Bool? {
+    public func containsMatch (_ pattern: String, ignoreCase: Bool = false) throws -> Bool? {
         if let regex = try ExSwift.regex(pattern, ignoreCase: ignoreCase) {
             let range = NSMakeRange(0, self.characters.count)
-            return regex.firstMatchInString(self, options: [], range: range) != nil
+            return regex.firstMatch(in: self, options: [], range: range) != nil
         }
 
         return nil
@@ -136,10 +131,10 @@ public extension String {
     - parameter ignoreCase: true for case insensitive matching
     - returns: true if contains match, otherwise false
     */
-    func replaceMatches (pattern: String, withString replacementString: String, ignoreCase: Bool = false) throws -> String? {
+    public func replaceMatches (_ pattern: String, withString replacementString: String, ignoreCase: Bool = false) throws -> String? {
         if let regex = try ExSwift.regex(pattern, ignoreCase: ignoreCase) {
             let range = NSMakeRange(0, self.characters.count)
-            return regex.stringByReplacingMatchesInString(self, options: [], range: range, withTemplate: replacementString)
+            return regex.stringByReplacingMatches(in: self, options: [], range: range, withTemplate: replacementString)
         }
         
         return nil
@@ -152,7 +147,7 @@ public extension String {
         - parameter string: String to insert
         - returns: String formed from self inserting string at index
     */
-    func insert (index: Int, _ string: String) -> String {
+    public func insert (_ index: Int, _ string: String) -> String {
         //  Edge cases, prepend and append
         if index > length {
             return self + string
@@ -168,15 +163,15 @@ public extension String {
 
         - returns: Stripped string
     */
-    func trimmedLeft (characterSet set: NSCharacterSet = NSCharacterSet.whitespaceAndNewlineCharacterSet()) -> String {
-        if let range = rangeOfCharacterFromSet(set.invertedSet) {
-            return self[range.startIndex..<endIndex]
+    public func trimmedLeft (characterSet set: CharacterSet = CharacterSet.whitespacesAndNewlines) -> String {
+        if let range = rangeOfCharacter(from: set.inverted) {
+            return self[range.lowerBound..<endIndex]
         }
 
         return ""
     }
 
-    @available(*, unavailable, message="use 'trimmedLeft' instead") func ltrimmed (set: NSCharacterSet = NSCharacterSet.whitespaceAndNewlineCharacterSet()) -> String {
+    @available(*, unavailable, message: "use 'trimmedLeft' instead") public func ltrimmed (_ set: CharacterSet = CharacterSet.whitespacesAndNewlines) -> String {
         return trimmedLeft(characterSet: set)
     }
 
@@ -185,15 +180,15 @@ public extension String {
 
         - returns: Stripped string
     */
-    func trimmedRight (characterSet set: NSCharacterSet = NSCharacterSet.whitespaceAndNewlineCharacterSet()) -> String {
-        if let range = rangeOfCharacterFromSet(set.invertedSet, options: NSStringCompareOptions.BackwardsSearch) {
-            return self[startIndex..<range.endIndex]
+    public func trimmedRight (characterSet set: CharacterSet = CharacterSet.whitespacesAndNewlines) -> String {
+        if let range = rangeOfCharacter(from: set.inverted, options: NSString.CompareOptions.backwards) {
+            return self[startIndex..<range.upperBound]
         }
 
         return ""
     }
 
-    @available(*, unavailable, message="use 'trimmedRight' instead") func rtrimmed (set: NSCharacterSet = NSCharacterSet.whitespaceAndNewlineCharacterSet()) -> String {
+    @available(*, unavailable, message: "use 'trimmedRight' instead") public func rtrimmed (_ set: CharacterSet = CharacterSet.whitespacesAndNewlines) -> String {
         return trimmedRight(characterSet: set)
     }
 
@@ -202,7 +197,7 @@ public extension String {
 
         - returns: Stripped string
     */
-    func trimmed () -> String {
+    public func trimmed () -> String {
         return trimmedLeft().trimmedRight()
     }
 
@@ -213,7 +208,8 @@ public extension String {
         - parameter charset: Chars to use in the random string
         - returns: Random string
     */
-    static func random (var length len: Int = 0, charset: String = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789") -> String {
+    public static func random (_ length: Int = 0, charset: String = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789") -> String {
+        var len = length
 
         if len < 1 {
             len = Int.random(max: 16)
@@ -236,9 +232,9 @@ public extension String {
 
         - returns: A double parsed from the string or nil if it cannot be parsed.
     */
-    func toDouble() -> Double? {
+    public func toDouble() -> Double? {
 
-        let scanner = NSScanner(string: self)
+        let scanner = Scanner(string: self)
         var double: Double = 0
 
         if scanner.scanDouble(&double) {
@@ -254,9 +250,9 @@ public extension String {
 
        - returns: A float parsed from the string or nil if it cannot be parsed.
     */
-    func toFloat() -> Float? {
+    public func toFloat() -> Float? {
 
-        let scanner = NSScanner(string: self)
+        let scanner = Scanner(string: self)
         var float: Float = 0
 
         if scanner.scanFloat(&float) {
@@ -272,7 +268,7 @@ public extension String {
 
         - returns: A UInt parsed from the string or nil if it cannot be parsed.
     */
-    func toUInt() -> UInt? {
+    public func toUInt() -> UInt? {
         if let val = Int(self.trimmed()) {
             if val < 0 {
                 return nil
@@ -289,8 +285,8 @@ public extension String {
 
       - returns: A Bool parsed from the string or nil if it cannot be parsed as a boolean.
     */
-    func toBool() -> Bool? {
-        let text = self.trimmed().lowercaseString
+    public func toBool() -> Bool? {
+        let text = self.trimmed().lowercased()
         if text == "true" || text == "false" || text == "yes" || text == "no" {
             return (text as NSString).boolValue
         }
@@ -304,14 +300,14 @@ public extension String {
 
       - returns: A NSDate parsed from the string or nil if it cannot be parsed as a date.
     */
-    func toDate(format : String? = "yyyy-MM-dd") -> NSDate? {
-        let text = self.trimmed().lowercaseString
-        let dateFmt = NSDateFormatter()
-        dateFmt.timeZone = NSTimeZone.defaultTimeZone()
+    public func toDate(_ format : String? = "yyyy-MM-dd") -> Date? {
+        let text = self.trimmed().lowercased()
+        let dateFmt = DateFormatter()
+        dateFmt.timeZone = TimeZone.current
         if let fmt = format {
             dateFmt.dateFormat = fmt
         }
-        return dateFmt.dateFromString(text)
+        return dateFmt.date(from: text)
     }
 
     /**
@@ -320,7 +316,7 @@ public extension String {
 
       - returns: A NSDate parsed from the string or nil if it cannot be parsed as a date.
     */
-    func toDateTime(format : String? = "yyyy-MM-dd hh-mm-ss") -> NSDate? {
+    public func toDateTime(_ format : String? = "yyyy-MM-dd hh-mm-ss") -> Date? {
         return toDate(format)
     }
 
@@ -345,7 +341,7 @@ public func * (first: String, n: Int) -> String {
 public func =~ (string: String, pattern: String) throws -> Bool {
 
     let regex = try ExSwift.regex(pattern, ignoreCase: false)!
-    let matches = regex.numberOfMatchesInString(string, options: [], range: NSMakeRange(0, string.length))
+    let matches = regex.numberOfMatches(in: string, options: [], range: NSMakeRange(0, string.length))
 
     return matches > 0
 
@@ -354,7 +350,7 @@ public func =~ (string: String, pattern: String) throws -> Bool {
 //  Pattern matching using a regular expression
 public func =~ (string: String, regex: NSRegularExpression) -> Bool {
 
-    let matches = regex.numberOfMatchesInString(string, options: [], range: NSMakeRange(0, string.length))
+    let matches = regex.numberOfMatches(in: string, options: [], range: NSMakeRange(0, string.length))
 
     return matches > 0
 
@@ -363,7 +359,7 @@ public func =~ (string: String, regex: NSRegularExpression) -> Bool {
 //  This version also allowes to specify case sentitivity
 public func =~ (string: String, options: (pattern: String, ignoreCase: Bool)) throws -> Bool {
 
-    if let matches = try ExSwift.regex(options.pattern, ignoreCase: options.ignoreCase)?.numberOfMatchesInString(string, options: [], range: NSMakeRange(0, string.length)) {
+    if let matches = try ExSwift.regex(options.pattern, ignoreCase: options.ignoreCase)?.numberOfMatches(in: string, options: [], range: NSMakeRange(0, string.length)) {
         return matches > 0
     }
 
@@ -382,7 +378,7 @@ public func =~ (strings: [String], pattern: String) throws -> Bool {
 
 public func =~ (strings: [String], options: (pattern: String, ignoreCase: Bool)) throws -> Bool {
 
-    var lastError: ErrorType?
+    var lastError: Error?
 
     let result = strings.all {
         do {
@@ -412,7 +408,7 @@ public func |~ (strings: [String], pattern: String) throws -> Bool {
 
 public func |~ (strings: [String], options: (pattern: String, ignoreCase: Bool)) throws -> Bool {
 
-    var lastError: ErrorType?
+    var lastError: Error?
     
     let result = strings.any {
         do {
