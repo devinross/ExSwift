@@ -217,19 +217,19 @@ public extension Dictionary {
         - parameter testFunction: Function called to test each key, value
         - returns: Filtered dictionary
     */
-    public func filter (_ test: (Key, Value) -> Bool) -> Dictionary {
-
-        var result = Dictionary()
-
-        for (key, value) in self {
-            if test(key, value) {
-                result[key] = value
-            }
-        }
-
-        return result
-
-    }
+//    public func filter (_ test: (Key, Value) -> Bool) -> Dictionary {
+//
+//        var result = Dictionary()
+//
+//        for (key, value) in self {
+//            if test(key, value) {
+//                result[key] = value
+//            }
+//        }
+//
+//        return result
+//
+//    }
 
     /**
         Creates a dictionary composed of keys generated from the results of
@@ -347,9 +347,16 @@ public extension Dictionary {
         - returns: Filtered dictionary
     */
     public func pick (_ keys: [Key]) -> Dictionary {
-        return filter { (key: Key, _) -> Bool in
-            return keys.contains(key)
-        }
+		
+		return self.filter({ (key, value) -> Bool in
+			return keys.contains(key)
+		})
+//		return filter { (key, value) -> Bool in
+//			 return keys.contains(key)
+//		}
+//        return filter { (key: Key, _) -> Bool in
+//            return keys.contains(key)
+//        }
     }
 
     /**

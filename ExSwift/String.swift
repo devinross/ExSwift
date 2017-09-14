@@ -28,7 +28,7 @@ public extension String {
 
         let range = characters.index(startIndex, offsetBy: range.lowerBound) ..< characters.index(startIndex, offsetBy: range.upperBound)
 
-        return self[range]
+		return String(self[range])
     }
 
     /**
@@ -165,7 +165,7 @@ public extension String {
     */
     public func trimmedLeft (characterSet set: CharacterSet = CharacterSet.whitespacesAndNewlines) -> String {
         if let range = rangeOfCharacter(from: set.inverted) {
-            return self[range.lowerBound..<endIndex]
+			return String(self[range.lowerBound..<endIndex])
         }
 
         return ""
@@ -182,7 +182,7 @@ public extension String {
     */
     public func trimmedRight (characterSet set: CharacterSet = CharacterSet.whitespacesAndNewlines) -> String {
         if let range = rangeOfCharacter(from: set.inverted, options: NSString.CompareOptions.backwards) {
-            return self[startIndex..<range.upperBound]
+			return String(self[startIndex..<range.upperBound])
         }
 
         return ""

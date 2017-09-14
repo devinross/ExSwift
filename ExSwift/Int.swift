@@ -15,8 +15,8 @@ public extension Int {
         
         - parameter function: Function to call
     */
-    public func times <T> (_ function: (Void) -> T) {
-        (0..<self).each { _ in _ = function(); return }
+	public func times <T> (_ function: () -> T) {
+		(0..<self).each { _ in _ = function(); return }
     }
 
     /**
@@ -24,9 +24,10 @@ public extension Int {
     
         - parameter function: Function to call
     */
-    public func times (_ function: (Void) -> Void) {
-        (0..<self).each { _ in function(); return }
+    public func times (_ function: () -> Void) {
+		(0..<self).each { _ in function(); return }
     }
+	
 
     /**
         Calls function self times passing a value from 0 to self on each call.

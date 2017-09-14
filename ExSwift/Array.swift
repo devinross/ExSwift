@@ -385,7 +385,7 @@ public extension Array {
         for i in (1..<self.count).reversed() {
         // for var i = self.count - 1; i >= 1; i -= 1 {
             let j = Int.random(max: i)
-            swap(&self[i], &self[j])
+			self.swapAt(i, j)
         }
 
     }
@@ -1226,7 +1226,7 @@ public extension Array {
         - returns: an array sorted by that block, in ascending order
     */
     public func sortUsing <U:Comparable> (_ block: ((Element) -> U)) -> [Element] {
-        return self.sorted(by: { block($0.0) < block($0.1) })
+        return self.sorted(by: { block($0) < block($1) })
     }
 
     /**
