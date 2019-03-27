@@ -13,7 +13,7 @@ public extension String {
     /**
         String length
     */
-    public var length: Int { return self.characters.count }
+    public var length: Int { return self.count }
 
     /**
         Returns the substring in the given range
@@ -21,15 +21,15 @@ public extension String {
         - parameter range:
         - returns: Substring in range
     */
-    public subscript (range: Range<Int>) -> String? {
-        if range.lowerBound < 0 || range.upperBound > self.length {
-            return nil
-        }
-
-        let range = characters.index(startIndex, offsetBy: range.lowerBound) ..< characters.index(startIndex, offsetBy: range.upperBound)
-
-		return String(self[range])
-    }
+//    public subscript (range: Range<Int>) -> String? {
+//        if range.lowerBound < 0 || range.upperBound > self.length {
+//            return nil
+//        }
+//
+//        let range = characters.index(startIndex, offsetBy: range.lowerBound) ..< characters.index(startIndex, offsetBy: range.upperBound)
+//
+//		return String(self[range])
+//    }
 
     /**
         Equivalent to at. Takes a list of indexes and returns an Array
@@ -40,9 +40,9 @@ public extension String {
         - parameter restOfIndexes:
         - returns: Charaters at the specified indexes (converted to String)
     */
-    public subscript (firstIndex: Int, secondIndex: Int, restOfIndexes: Int...) -> [String] {
-        return at([firstIndex, secondIndex] + restOfIndexes)
-    }
+//    public subscript (firstIndex: Int, secondIndex: Int, restOfIndexes: Int...) -> [String] {
+//        return at([firstIndex, secondIndex] + restOfIndexes)
+//    }
 
     /**
         Gets the character at the specified index as String.
@@ -51,23 +51,13 @@ public extension String {
         - parameter index: Position of the character to get
         - returns: Character as String or nil if the index is out of bounds
     */
-    public subscript (index: Int) -> String? {
-        if let char = Array(self.characters).get(index) {
-            return String(char)
-        }
-
-        return nil
-    }
-
-    /**
-        Takes a list of indexes and returns an Array containing the elements at the given indexes in self.
-
-        - parameter indexes: Positions of the elements to get
-        - returns: Array of characters (as String)
-    */
-    public func at (_ indexes: Int...) -> [String] {
-        return indexes.map { self[$0]! }
-    }
+//    public subscript (index: Int) -> String? {
+//        if let char = Array(self.characters).get(index) {
+//            return String(char)
+//        }
+//
+//        return nil
+//    }
 
     /**
         Takes a list of indexes and returns an Array containing the elements at the given indexes in self.
@@ -75,9 +65,19 @@ public extension String {
         - parameter indexes: Positions of the elements to get
         - returns: Array of characters (as String)
     */
-    public func at (_ indexes: [Int]) -> [String] {
-        return indexes.map { self[$0]! }
-    }
+//    public func at (_ indexes: Int...) -> [String] {
+//		return indexes.map { self[$0] }
+//    }
+
+    /**
+        Takes a list of indexes and returns an Array containing the elements at the given indexes in self.
+
+        - parameter indexes: Positions of the elements to get
+        - returns: Array of characters (as String)
+    */
+//    public func at (_ indexes: [Int]) -> [String] {
+//		return indexes.map { self[$0] }
+//    }
 
     /**
         Returns an array of strings, each of which is a substring of self formed by splitting it on separator.
@@ -85,9 +85,9 @@ public extension String {
         - parameter separator: Character used to split the string
         - returns: Array of substrings
     */
-    public func explode (_ separator: Character) -> [String] {
-      return self.characters.split { $0 == separator }.map { String($0) }
-    }
+//    public func explode (_ separator: Character) -> [String] {
+//      return self.characters.split { $0 == separator }.map { String($0) }
+//    }
 
     /**
         Finds any match in self for pattern.
@@ -116,7 +116,7 @@ public extension String {
     */
     public func containsMatch (_ pattern: String, ignoreCase: Bool = false) throws -> Bool? {
         if let regex = try ExSwift.regex(pattern, ignoreCase: ignoreCase) {
-            let range = NSMakeRange(0, self.characters.count)
+            let range = NSMakeRange(0, self.count)
             return regex.firstMatch(in: self, options: [], range: range) != nil
         }
 
@@ -133,7 +133,7 @@ public extension String {
     */
     public func replaceMatches (_ pattern: String, withString replacementString: String, ignoreCase: Bool = false) throws -> String? {
         if let regex = try ExSwift.regex(pattern, ignoreCase: ignoreCase) {
-            let range = NSMakeRange(0, self.characters.count)
+            let range = NSMakeRange(0, self.count)
             return regex.stringByReplacingMatches(in: self, options: [], range: range, withTemplate: replacementString)
         }
         
@@ -147,16 +147,16 @@ public extension String {
         - parameter string: String to insert
         - returns: String formed from self inserting string at index
     */
-    public func insert (_ index: Int, _ string: String) -> String {
-        //  Edge cases, prepend and append
-        if index > length {
-            return self + string
-        } else if index < 0 {
-            return string + self
-        }
-
-        return self[0..<index]! + string + self[index..<length]!
-    }
+//    public func insert (_ index: Int, _ string: String) -> String {
+//        //  Edge cases, prepend and append
+//        if index > length {
+//            return self + string
+//        } else if index < 0 {
+//            return string + self
+//        }
+//
+//        return self[0..<index]! + string + self[index..<length]!
+//    }
 
     /**
         Strips the specified characters from the beginning of self.
@@ -208,23 +208,23 @@ public extension String {
         - parameter charset: Chars to use in the random string
         - returns: Random string
     */
-    public static func random (_ length: Int = 0, charset: String = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789") -> String {
-        var len = length
-
-        if len < 1 {
-            len = Int.random(max: 16)
-        }
-
-        var result = String()
-        let max = charset.length - 1
-
-        len.times {
-            result += charset[Int.random(0, max: max)]!
-        }
-
-        return result
-
-    }
+//    public static func random (_ length: Int = 0, charset: String = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789") -> String {
+//        var len = length
+//
+//        if len < 1 {
+//            len = Int.random(max: 16)
+//        }
+//
+//        var result = String()
+//        let max = charset.length - 1
+//
+//        len.times {
+//            result += charset[Int.random(0, max: max)]!
+//        }
+//
+//        return result
+//
+//    }
 
 
     /**

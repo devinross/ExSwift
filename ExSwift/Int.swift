@@ -145,18 +145,18 @@ public extension Int {
         
         :return: Array of digits
     */
-    public func digits () -> [Int] {
-        var result = [Int]()
-        
-        for char in String(self).characters {
-            let string = String(char)
-            if let toInt = Int(string) {
-                result.append(toInt)
-            }
-        }
-    
-        return result
-    }
+//    public func digits () -> [Int] {
+//        var result = [Int]()
+//        
+//        for char in String(self).characters {
+//            let string = String(char)
+//            if let toInt = Int(string) {
+//                result.append(toInt)
+//            }
+//        }
+//    
+//        return result
+//    }
     
     /**
         Absolute value.

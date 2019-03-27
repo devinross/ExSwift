@@ -134,7 +134,7 @@ public class ExSwift {
     public class func bind <P, T> (_ function: @escaping (P...) -> T, _ parameters: P...) -> (() -> T) {
         typealias Function = ([P]) -> T
 
-        return { Void -> T in
+        return { () -> T in
             let adaptedFunction = unsafeBitCast(function, to: Function.self)
             return adaptedFunction(parameters)
         }
