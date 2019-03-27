@@ -131,7 +131,7 @@ public class ExSwift {
         - parameter parameters: Arguments to pass to function
         - returns: Wrapper function
     */
-    public class func bind <P, T> (_ function: @escaping (P...) -> T, _ parameters: P...) -> ((Void) -> T) {
+    public class func bind <P, T> (_ function: @escaping (P...) -> T, _ parameters: P...) -> (() -> T) {
         typealias Function = ([P]) -> T
 
         return { Void -> T in

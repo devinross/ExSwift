@@ -161,7 +161,7 @@ public extension Array {
     */
     public func indexOf <U: Equatable> (_ item: U) -> Int? {
         if item is Element {
-            return self.index(where: { (object) -> Bool in
+            return self.firstIndex(where: { (object) -> Bool in
                 return (object as! U) == item
             })
         }
